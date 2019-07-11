@@ -5,6 +5,8 @@
 
 axios.get('https://api.github.com/users/spmcdonnell').then(data => {
     console.log('Git data:', data.data);
+
+    document.querySelector('.cards').appendChild(createUserCard(data));
 });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -51,23 +53,51 @@ const followersArray = [];
 */
 
 function createUserCard(data) {
+    const { avatar_url, name, login, location, html_url, followers, following, bio } = data.data;
+
     // Create elements
-    var card = document.createElement('div'),
-        avatar = document.createElement('image'),
-        details = document.createElement('div'),
-        name = document.createElement('h3'),
-        username = document.createElement('p'),
-        location = document.createElement('p'),
-        profile = document.createElement('p'),
-        followers = document.createElement('p'),
-        following = document.createElement('p'),
-        bio = document.createElement('p');
+    var cardElem = document.createElement('div'),
+        avatarElem = document.createElement('image'),
+        detailsElem = document.createElement('div'),
+        nameElem = document.createElement('h3'),
+        usernameElem = document.createElement('p'),
+        locationElem = document.createElement('p'),
+        profileElem = document.createElement('p'),
+        profileLinkElem = document.createElement('a'),
+        followersElem = document.createElement('p'),
+        followingElem = document.createElement('p'),
+        bioElem = document.createElement('p');
 
     // Add classes
-    card.classList.add('card');
-    details.classList.add('card-info');
-    name.classList.add('name');
-    username.classList.add('username');
+    cardElem.classList.add('card');
+    detailsElem.classList.add('card-info');
+    nameElem.classList.add('name');
+    usernameElem.classList.add('username');
+
+    // Add content from API
+    avatarElem.src = avatar_url;
+    nameElem.textContent = name;
+    usernameElem.textContent = login;
+    locationElem.textContent = `Location: ${location}`;
+    profileLinkElem.href = html_url;
+    profileLinkElem.textContent = html_url;
+    followersElem.textContent = `Followers: ${followers}`;
+    followingElem.textContent = `Following: ${following}`;
+    bioElem.textContent = `Bio: ${bio}`;
+
+    // Append everything
+    cardElem.appendChild(avatarElem);
+    cardElem.appendChild(detailsElem);
+    detailsElem.appendChild(nameElem);
+    detailsElem.appendChild(usernameElem);
+    detailsElem.appendChild(locationElem);
+    detailsElem.appendChild(profileElem);
+    profileElem.appendChild(profileLinkElem);
+    detailsElem.appendChild(followersElem);
+    detailsElem.appendChild(followingElem);
+    detailsElem.appendChild(bioElem);
+
+    return cardElem;
 }
 
 /* List of LS Instructors Github username's: 
