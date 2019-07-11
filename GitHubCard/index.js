@@ -3,6 +3,10 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/spmcdonnell').then(data => {
+    console.log('Git data:', data.data);
+});
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -45,6 +49,26 @@ const followersArray = [];
 </div>
 
 */
+
+function createUserCard(data) {
+    // Create elements
+    var card = document.createElement('div'),
+        avatar = document.createElement('image'),
+        details = document.createElement('div'),
+        name = document.createElement('h3'),
+        username = document.createElement('p'),
+        location = document.createElement('p'),
+        profile = document.createElement('p'),
+        followers = document.createElement('p'),
+        following = document.createElement('p'),
+        bio = document.createElement('p');
+
+    // Add classes
+    card.classList.add('card');
+    details.classList.add('card-info');
+    name.classList.add('name');
+    username.classList.add('username');
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
