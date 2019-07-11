@@ -3,9 +3,21 @@
            https://api.github.com/users/<your name>
 */
 
-axios.get('https://api.github.com/users/spmcdonnell').then(data => {
-    document.querySelector('.cards').appendChild(createUserCard(data));
-});
+const followersArray = ['spmcdonnell', 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+axios
+    .all(
+        followersArray.map(user => {
+            return axios.get(`https://api.github.com/users/${user}`);
+        })
+    )
+    .then(data => {
+        var cardsContainer = document.querySelector('.cards');
+
+        data.forEach(user => {
+            cardsContainer.appendChild(createUserCard(user));
+        });
+    });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -28,14 +40,6 @@ axios.get('https://api.github.com/users/spmcdonnell').then(data => {
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
-
-followersArray.forEach(user => {
-    axios.get(`https://api.github.com/users/${user}`).then(data => {
-        document.querySelector('.cards').appendChild(createUserCard(data));
-    });
-});
-
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -57,7 +61,12 @@ followersArray.forEach(user => {
 */
 
 function createUserCard(data) {
-    const { avatar_url, name, login, location, html_url, followers, following, bio } = data.data;
+    // Pull API values
+    let { avatar_url, name, login, location, html_url, followers, following, bio } = data.data;
+
+    if (bio === null) {
+        bio = 'This user has no bio.';
+    }
 
     // Create elements
     var cardElem = document.createElement('div'),
@@ -103,11 +112,3 @@ function createUserCard(data) {
 
     return cardElem;
 }
-
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
